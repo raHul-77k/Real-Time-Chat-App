@@ -27,3 +27,25 @@ exports.signup = async (req, res) => {
         res.status(500).send('Error signing up, please try again.');
     }
 };
+
+exports.login = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        // Check if the user exists
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+            return res.status(400).send('User not found, please sign up first');
+        }
+
+        // Compare the provided password with the stored hashed password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).send('Incorrect password, please try again');
+        }
+
+        res.send('Successfully logged in');
+    } catch (error) {
+        console.error('Error logging in:', error);
+        res.status(500).send('Error logging in, please try again.');
+    }
+};
