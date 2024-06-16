@@ -40,8 +40,10 @@
                 });
 
                 if (response.ok) {
+                    const data = await response.json();
                     alert('Successfully logged in');
-                    // You can redirect the user to the dashboard or home page after successful login
+                    // Store the token in local storage or cookie
+                    localStorage.setItem('token', data.token);
                     window.location.href = '/';
                 } else {
                     const errorMessage = await response.text();

@@ -6,8 +6,12 @@ const sequelize = require('./util/database');
 const app = express();
 
 // Middleware
-app.use(cors());
-app.use(bodyParser.json()); // Use bodyParser.json() for JSON payloads
+app.use(cors({
+    origin: '*', // Update this as needed for your use case
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 
 // Sync database
