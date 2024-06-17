@@ -11,7 +11,7 @@ router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../../frontend/public/login.html'));
 });
 
-router.post('/signup', userController.signup);
-router.post('/login', userController.login);
+router.post('/signup', userController.signup); 
+router.post('/login', userController.login); 
 
 module.exports = router;

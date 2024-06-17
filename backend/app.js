@@ -3,6 +3,13 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const sequelize = require('./util/database');
+
+const dotenv = require('dotenv');
+
+// Load environment variables
+dotenv.config();    
+
+
 const app = express();
 
 // Middleware
@@ -14,6 +21,10 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 
+// Models
+const User = require('./models/User');
+const Chat = require('./models/Chat');
+
 // Sync database
 sequelize.sync()
     .then(() => console.log('Database synced'))
@@ -21,7 +32,10 @@ sequelize.sync()
 
 // Routes
 const userRoutes = require('./routes/user');
+const chatRoutes = require('./routes/chat');
+
 app.use('/user', userRoutes);
+app.use('/chat', chatRoutes);
 
 // Home route
 app.get('/', (req, res) => {

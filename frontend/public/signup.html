@@ -49,6 +49,7 @@
                 
                 if (response.ok) {
                     alert('Successfully signed up');
+                    window.location.href = '/index.html'; // Redirect to login page
                 } else if (response.status === 400) {
                     alert('User already exists, Please Login');
                 } else {

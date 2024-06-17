@@ -2,10 +2,16 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const secretKey = 'your_secret_key'; // Replace with your actual secret key
+const secretKey = 'secretKey'; // Use a secure key in production
+
+const generateAccessToken = (userId) => {
+    const payload = { userId };
+    const options = { expiresIn: '1h' }; // Token expiration time
+    return jwt.sign(payload, secretKey, options);
+};
 
 exports.signup = async (req, res) => {
-    const { name, email, phone, password } = req.body;
+    const { id, name, email, phone, password } = req.body;
     try {
         const existingUser = await User.findOne({ where: { email } });
         if (existingUser) {
@@ -13,7 +19,13 @@ exports.signup = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        await User.create({ name, email, phone, password: hashedPassword });
+        await User.create({
+            id,
+            name,
+            email,
+            phone, 
+            password: hashedPassword 
+        });
         res.status(201).send('Successfully signed up');
     } catch (error) {
         res.status(500).send('Error signing up, please try again.');
@@ -32,8 +44,7 @@ exports.login = async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).send('User not authorized');
         }
-
-        const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '1h' });
+        const token = generateAccessToken(user.id); // Generating token using the function
         res.status(200).json({ token });
     } catch (error) {
         res.status(500).send('Error logging in, please try again.');
