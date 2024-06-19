@@ -23,7 +23,6 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            display: none;
         }
         #chat-container {
             display: none;
@@ -116,7 +115,14 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('login-container').style.display = 'block';
+            const token = localStorage.getItem('token');
+            if (token) {
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('chat-container').style.display = 'block';
+                loadChatMessages();
+            } else {
+                document.getElementById('login-container').style.display = 'block';
+            }
         });
 
         document.getElementById('login-button').addEventListener('click', async function() {
@@ -133,7 +139,7 @@
 
             if (response.status === 200) {
                 const data = await response.json();
-                localStorage.setItem('token', data.token);
+                sessionStorage.setItem('token', data.token);
                 document.getElementById('login-container').style.display = 'none';
                 document.getElementById('chat-container').style.display = 'block';
                 loadChatMessages();
