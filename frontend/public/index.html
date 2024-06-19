@@ -120,7 +120,7 @@
                 document.getElementById('login-container').style.display = 'none';
                 document.getElementById('chat-container').style.display = 'block';
                 loadChatMessages();
-                setInterval(loadChatMessages, 1000);
+                // setInterval(loadChatMessages, 1000);
             } else {
                 document.getElementById('login-container').style.display = 'block';
             }
@@ -144,7 +144,7 @@
                 document.getElementById('login-container').style.display = 'none';
                 document.getElementById('chat-container').style.display = 'block';
                 loadChatMessages();
-                setInterval(loadChatMessages, 1000);
+                // setInterval(loadChatMessages, 1000);
             } else if (response.status === 401) {
                 alert('User not authorized');
             } else if (response.status === 404) {
@@ -192,10 +192,9 @@
                 }
 
                 if (response.status === 201) {
-                    const messageElement = document.createElement('div');
-                    messageElement.classList.add('message');
-                    messageElement.textContent = `You: ${messageText}`;
-                    document.getElementById('chat-messages').appendChild(messageElement);
+                    const data = await response.json();
+                    displayMessage(data);
+                    storeMessage(data);
 
                     messageInput.value = '';
                     document.getElementById('chat-window').scrollTop = document.getElementById('chat-window').scrollHeight;
@@ -205,9 +204,31 @@
             }
         }
 
+        function displayMessage(msg) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.textContent = `${msg.User.name}: ${msg.message}`;
+            document.getElementById('chat-messages').appendChild(messageElement);
+
+            document.getElementById('chat-window').scrollTop = document.getElementById('chat-window').scrollHeight;
+        }
+
+        function storeMessage(msg) {
+            let messages = JSON.parse(localStorage.getItem('messages')) || [];
+            messages.push(msg);
+            localStorage.setItem('messages', JSON.stringify(messages));
+        }
+
         async function loadChatMessages() {
-            let token = localStorage.getItem('token');
-            let response = await fetch('http://localhost:3000/chat', {
+            let messages = JSON.parse(localStorage.getItem('messages')) || [];
+            if (messages.length > 0) {
+                messages.forEach(displayMessage);
+            }
+
+            const lastMessageTime = messages.length > 0 ? new Date(messages[messages.length - 1].createdAt).getTime() : 0;
+
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:3000/chat/since/${lastMessageTime}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -218,7 +239,7 @@
                 // Token expired, try refreshing the token
                 token = await refreshAccessToken();
                 if (token) {
-                    response = await fetch('http://localhost:3000/chat', {
+                    response = await fetch(`http://localhost:3000/chat/since/${lastMessageTime}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`
@@ -228,20 +249,13 @@
             }
 
             if (response.status === 200) {
-                const chats = await response.json();
-                const chatMessages = document.getElementById('chat-messages');
-                chatMessages.innerHTML = '';
-
-                chats.forEach(chat => {
-                    const messageElement = document.createElement('div');
-                    messageElement.classList.add('message');
-                    messageElement.textContent = `${chat.User.name}: ${chat.message}`;
-                    chatMessages.appendChild(messageElement);
+                const newMessages = await response.json();
+                newMessages.forEach(message => {
+                    displayMessage(message);
+                    storeMessage(message);
                 });
-
-                document.getElementById('chat-window').scrollTop = document.getElementById('chat-window').scrollHeight;
             } else {
-                alert('Error loading messages');
+                alert('Error loading new messages');
             }
         }
 
