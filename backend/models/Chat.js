@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../util/database'); 
+const sequelize = require('../util/database');
 const User = require('./User');
 
 const Chat = sequelize.define('Chat', {
@@ -12,15 +12,15 @@ const Chat = sequelize.define('Chat', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: User,
-            key: 'id'
+        model: User,
+        key: 'id'
         }
     },
     message: {
         type: DataTypes.STRING,
         allowNull: false
-    }
-});
+        }
+    });
 
 Chat.belongsTo(User, { foreignKey: 'userId' });
 

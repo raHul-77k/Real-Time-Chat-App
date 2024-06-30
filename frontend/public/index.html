@@ -1,286 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-        #login-container, #chat-container {
-            width: 50%;
-            max-width: 800px;
-            min-width: 300px;
-            background: #fff;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        #chat-container {
-            display: none;
-        }
-        h1 {
-            text-align: center;
-            background: #333;
-            color: white;
-            margin: 0;
-            padding: 10px;
-        }
-        #chat-window {
-            height: 500px;
-            overflow-y: scroll;
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-        #chat-messages {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .message {
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        .message:nth-child(odd) {
-            background: #eee;
-        }
-        .message:nth-child(even) {
-            background: #ddd;
-        }
-        #user-input {
-            display: flex;
-            border-top: 1px solid #ccc;
-        }
-        #message-input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-right: 1px solid #ccc;
-        }
-        #send-button {
-            padding: 10px;
-            background: #333;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        #login-form {
-            padding: 20px;
-        }
-        #login-form input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        #login-form button {
-            width: 100%;
-            padding: 10px;
-            background: #333;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-    <div id="login-container">
-        <h1>Login</h1>
-        <form id="login-form">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="button" id="login-button">Login</button>
-        </form>
-    </div>
-    <div id="chat-container">
-        <h1>Chat App</h1>
-        <div id="chat-window">
-            <div id="chat-messages"></div>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chat App</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f0f0f0;
+            }
+            #login-container, #chat-container {
+                width: 50%;
+                max-width: 800px;
+                min-width: 300px;
+                background: #fff;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+            #chat-container {
+                display: none;
+            }
+            h1 {
+                text-align: center;
+                background: #333;
+                color: white;
+                margin: 0;
+                padding: 10px;
+            }
+            #chat-window {
+                height: 500px;
+                overflow-y: scroll;
+                padding: 10px;
+                border-bottom: 1px solid #ccc;
+            }
+            #chat-messages {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .message {
+                padding: 10px;
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+            .message:nth-child(odd) {
+                background: #eee;
+            }
+            .message:nth-child(even) {
+                background: #ddd;
+            }
+            #user-input {
+                display: flex;
+                border-top: 1px solid #ccc;
+            }
+            #message-input {
+                flex: 1;
+                padding: 10px;
+                border: none;
+                border-right: 1px solid #ccc;
+            }
+            #send-button {
+                padding: 10px;
+                background: #333;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+            #login-form {
+                padding: 20px;
+            }
+            #login-form input {
+                width: calc(100% - 20px);
+                padding: 10px;
+                margin: 10px 0;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            #login-form button {
+                width: 100%;
+                padding: 10px;
+                background: #333;
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+            #group-form {
+                padding: 20px;
+                border-bottom: 1px solid #ccc;
+            }
+            #group-form input, #group-user-form input, #group-user-form select {
+                width: calc(100% - 20px);
+                padding: 10px;
+                margin: 10px 0;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            #group-form button, #group-user-form button {
+                width: 100%;
+                padding: 10px;
+                background: #333;
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+            #group-select {
+                margin: 10px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="login-container">
+            <h1>Login</h1>
+            <form id="login-form">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="button" id="login-button">Login</button>
+            </form>
         </div>
-        <div id="user-input">
-            <input type="text" id="message-input" placeholder="Type a message...">
-            <button id="send-button">Send</button>
+        <div id="chat-container">
+            <h1>Chat App</h1>
+            
+            <div id="group-form">
+                <h2>Create Group</h2>
+                <input type="text" id="group-name" placeholder="Group Name" required>
+                <textarea id="group-description" placeholder="Group Description" required></textarea>
+                <button type="button" id="create-group-button">Create Group</button>
+            </div>
+            
+            <div id="group-user-form">
+                <h2>Add User to Group</h2>
+                <select id="group-select">
+                    <option value="" disabled selected>Select Group</option>
+                </select>
+                <input type="text" id="add-user-name" placeholder="Username" required>
+                <button type="button" id="add-user-button">Add User To Group</button>
+                <h3 id="group-message" style="display: none;"></h3>
+            </div>
+
+            <div id="chat-window">
+                <div id="chat-messages"></div>
+            </div>
+            
+            <div id="user-input">
+                <input type="text" id="message-input" placeholder="Type a message...">
+                <button id="send-button">Send</button>
+            </div>
         </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const token = localStorage.getItem('token');
-            if (token) {
-                document.getElementById('login-container').style.display = 'none';
-                document.getElementById('chat-container').style.display = 'block';
-                loadChatMessages();
-                // setInterval(loadChatMessages, 1000);
-            } else {
-                document.getElementById('login-container').style.display = 'block';
-            }
-        });
-
-        document.getElementById('login-button').addEventListener('click', async function() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            const response = await fetch('http://localhost:3000/user/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
-
-            if (response.status === 200) {
-                const data = await response.json();
-                localStorage.setItem('token', data.token);
-                document.getElementById('login-container').style.display = 'none';
-                document.getElementById('chat-container').style.display = 'block';
-                loadChatMessages();
-                // setInterval(loadChatMessages, 1000);
-            } else if (response.status === 401) {
-                alert('User not authorized');
-            } else if (response.status === 404) {
-                alert('User not found');
-            } else {
-                alert('Error logging in, please try again');
-            }
-        });
-
-        document.getElementById('send-button').addEventListener('click', sendMessage);
-        document.getElementById('message-input').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        async function sendMessage() {
-            const messageInput = document.getElementById('message-input');
-            const messageText = messageInput.value.trim();
-
-            if (messageText !== '') {
-                let token = localStorage.getItem('token');
-                let response = await fetch('http://localhost:3000/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ message: messageText })
-                });
-
-                if (response.status === 401) {
-                    // Token expired, try refreshing the token
-                    token = await refreshAccessToken();
-                    if (token) {
-                        response = await fetch('http://localhost:3000/chat', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${token}`
-                            },
-                            body: JSON.stringify({ message: messageText })
-                        });
-                    }
-                }
-
-                if (response.status === 201) {
-                    const data = await response.json();
-                    displayMessage(data);
-                    storeMessage(data);
-
-                    messageInput.value = '';
-                    document.getElementById('chat-window').scrollTop = document.getElementById('chat-window').scrollHeight;
-                } else {
-                    alert('Error sending message');
-                }
-            }
-        }
-
-        function displayMessage(msg) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            messageElement.textContent = `${msg.User.name}: ${msg.message}`;
-            document.getElementById('chat-messages').appendChild(messageElement);
-
-            document.getElementById('chat-window').scrollTop = document.getElementById('chat-window').scrollHeight;
-        }
-
-        function storeMessage(msg) {
-            let messages = JSON.parse(localStorage.getItem('messages')) || [];
-            messages.push(msg);
-            localStorage.setItem('messages', JSON.stringify(messages));
-        }
-
-        async function loadChatMessages() {
-            let messages = JSON.parse(localStorage.getItem('messages')) || [];
-            if (messages.length > 0) {
-                messages.forEach(displayMessage);
-            }
-
-            const lastMessageTime = messages.length > 0 ? new Date(messages[messages.length - 1].createdAt).getTime() : 0;
-
-            const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:3000/chat/since/${lastMessageTime}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (response.status === 401) {
-                // Token expired, try refreshing the token
-                token = await refreshAccessToken();
-                if (token) {
-                    response = await fetch(`http://localhost:3000/chat/since/${lastMessageTime}`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                }
-            }
-
-            if (response.status === 200) {
-                const newMessages = await response.json();
-                newMessages.forEach(message => {
-                    displayMessage(message);
-                    storeMessage(message);
-                });
-            } else {
-                alert('Error loading new messages');
-            }
-        }
-
-        async function refreshAccessToken() {
-            const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/user/refresh-token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ token })
-            });
-
-            if (response.status === 200) {
-                const data = await response.json();
-                localStorage.setItem('token', data.token);
-                return data.token;
-            } else {
-                alert('Session expired. Please log in again.');
-                localStorage.removeItem('token');
-                document.getElementById('login-container').style.display = 'block';
-                document.getElementById('chat-container').style.display = 'none';
-                return null;
-            }
-        }
-    </script>
-</body>
-</html>
+        <script src="script.js"></script>
+    </body>
+    </html>

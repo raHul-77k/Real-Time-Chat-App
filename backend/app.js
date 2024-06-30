@@ -21,21 +21,25 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 
-// Models
-const User = require('./models/User');
-const Chat = require('./models/Chat');
+
+
 
 // Sync database
-sequelize.sync()
+sequelize.sync({force:false})
     .then(() => console.log('Database synced'))
     .catch(err => console.error('Error syncing database', err));
 
 // Routes
 const userRoutes = require('./routes/user');
 const chatRoutes = require('./routes/chat');
+const groupRoutes = require('./routes/group');
+
+
 
 app.use('/user', userRoutes);
 app.use('/chat', chatRoutes);
+app.use('/group',groupRoutes);
+
 
 // Home route
 app.get('/', (req, res) => {
@@ -47,3 +51,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+

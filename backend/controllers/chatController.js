@@ -25,7 +25,9 @@ const chatController = {
                 include: [{ model: User, attributes: ['name'] }],
                 order: [['createdAt', 'ASC']]
             });
-
+    
+            console.log('Fetched chats:', JSON.stringify(chats, null, 2));
+    
             res.status(200).json(chats);
         } catch (error) {
             console.error('Error retrieving messages:', error);
